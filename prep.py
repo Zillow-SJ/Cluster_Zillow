@@ -24,7 +24,7 @@ def drop_rows(df):
 def prep_df():
     df = acquire.wrangle_zillow()
     df = drop_columns(df)
-    return drop_rows(df)
+    return df
 
 def impute_values(df):
     df.lotsizesquarefeet = df['lotsizesquarefeet'].fillna((df.landtaxvaluedollarcnt /df.tax_value_per_foot.mean()))
