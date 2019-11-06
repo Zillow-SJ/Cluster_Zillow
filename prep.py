@@ -27,5 +27,9 @@ def drop_rows(df):
     return df_new
 
 
+def impute_values(df):
+    df.lotsizesquarefeet = df['lotsizesquarefeet'].fillna((df.landtaxvaluedollarcnt /df.tax_value_per_foot.mean()))
+    return df
+
 
 
