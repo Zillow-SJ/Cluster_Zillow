@@ -1,13 +1,7 @@
 import warnings
 warnings.filterwarnings("ignore")
-
+import acquire
 import pandas as pd
-import env
-
-
-
-url = env.get_db_url('zillow')
-
 def drop_columns(df):
     df_nulls_c = pd.DataFrame(df.apply(lambda x: len(x) - x.count(),axis=0))
     df_nulls_c['pct_rows_missing'] = df_nulls_c[0] / len(df)
@@ -27,9 +21,8 @@ def drop_rows(df):
     return df_new
 
 
-def impute_values(df):
-    df.lotsizesquarefeet = df['lotsizesquarefeet'].fillna((df.landtaxvaluedollarcnt /df.tax_value_per_foot.mean()))
-    return df
-
-
+def prep_df():
+    df = wrangle_zillow()
+    df = drop_columns(df)
+    return drop_rows(df)
 
