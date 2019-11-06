@@ -9,7 +9,7 @@ def drop_columns(df):
     column_drops['column_names'] = column_drops.index
     column_drops = list(column_drops.column_names)
     df_new = df.drop(column_drops,axis=1)
-    df_new.drop(columns='parcelid')
+    df_new.drop(columns=['parcelid','id','transactiondate'])
     return df_new
 
 def drop_rows(df):
