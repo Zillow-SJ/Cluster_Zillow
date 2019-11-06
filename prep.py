@@ -2,12 +2,6 @@ import warnings
 warnings.filterwarnings("ignore")
 
 import pandas as pd
-import env
-
-
-
-url = env.get_db_url('zillow')
-
 def drop_columns(df):
     df_nulls_c = pd.DataFrame(df.apply(lambda x: len(x) - x.count(),axis=0))
     df_nulls_c['pct_rows_missing'] = df_nulls_c[0] / len(df)
