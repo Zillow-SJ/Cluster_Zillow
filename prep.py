@@ -38,6 +38,9 @@ def prep_df():
 
     #drops columns with more than 20% missing values and columns with high correlation
     df = drop_columns(df)
+    
+    #drop rows with NAs. Less than 1100 rows of 55,000 data set.
+    df = df.dropna(how='any')
     return df
 
 
