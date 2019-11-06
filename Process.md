@@ -17,3 +17,8 @@
 - Dropped roomcnt due to large amount of unresolvable nan's.
 - Dropped landtaxvaluedollarcnt column due to high correlation with tax_value column. 
 - Dropped taxamount column due to high correlation with tax_value column.
+
+
+- dropped assessment year as it is only 2016 or 2017
+
+- dropped prperty use codes that were strings, lost 106 rows.

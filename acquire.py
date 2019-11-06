@@ -25,6 +25,10 @@ def wrangle_zillow():
     p.bathroomcnt > 0
     and
     p.taxvaluedollarcnt > 0
+    and
+    p.propertycountylandusecode != "010G"
+    and
+    p.propertycountylandusecode != "010M"
 
     """
     ,url)

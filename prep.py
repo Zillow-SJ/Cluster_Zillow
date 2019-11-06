@@ -13,7 +13,7 @@ def drop_columns(df):
         'bathroomcnt','bedroomcnt','calculatedbathnbr','finishedsquarefeet12',\
             'censustractandblock','fullbathcnt','propertylandusetypeid',\
                 'rawcensustractandblock','roomcnt','calculatedfinishedsquarefeet',\
-                    'landtaxvaluedollarcnt','taxamount','taxvaluedollarcnt'])
+                    'landtaxvaluedollarcnt','taxamount','taxvaluedollarcnt','assessmentyear'])
     return df_new
 
 def drop_rows(df):
@@ -38,7 +38,7 @@ def prep_df():
 
     #drops columns with more than 20% missing values and columns with high correlation
     df = drop_columns(df)
-    
+
     #drop rows with NAs. Less than 1100 rows of 55,000 data set.
     df = df.dropna(how='any')
     return df
