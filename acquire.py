@@ -2,10 +2,9 @@ import warnings
 warnings.filterwarnings("ignore")
 
 import pandas as pd
-import numpy as np
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
+
 import env
-import seaborn as sns
+
 
 url = env.get_db_url('zillow')
 #
