@@ -22,7 +22,7 @@ def drop_rows(df):
 
 
 def prep_df():
-    df = wrangle_zillow()
+    df = acquire.wrangle_zillow()
     df = drop_columns(df)
     return drop_rows(df)
 
