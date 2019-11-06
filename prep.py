@@ -1,6 +1,6 @@
 import warnings
 warnings.filterwarnings("ignore")
-
+import acquire
 import pandas as pd
 def drop_columns(df):
     df_nulls_c = pd.DataFrame(df.apply(lambda x: len(x) - x.count(),axis=0))
@@ -21,5 +21,8 @@ def drop_rows(df):
     return df_new
 
 
-
+def prep_df():
+    df = wrangle_zillow()
+    df = drop_columns(df)
+    return drop_rows(df)
 
