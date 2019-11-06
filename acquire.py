@@ -9,7 +9,7 @@ url = env.get_db_url('zillow')
 def wrangle_zillow():
     df = pd.read_sql("""
     SELECT 
-    p17.transactiondate,p.id,p.bathroomcnt as bathrooms,p.bedroomcnt as bedrooms, p.calculatedfinishedsquarefeet as sqft, p.taxvaluedollarcnt as tax_value, `architecturalstyledesc`,a.*, p.*,c.*
+    p17.transactiondate,p.id,p.bathroomcnt as bathrooms,p.bedroomcnt as bedrooms, p.calculatedfinishedsquarefeet as sqft, p.taxvaluedollarcnt as tax_value, `architecturalstyledesc`,a.*, p.*,c.*,p17.*
     FROM propertylandusetype pl
     JOIN properties_2017 p ON p.propertylandusetypeid = pl.propertylandusetypeid
     JOIN predictions_2017 p17 ON p17.id = p.id
