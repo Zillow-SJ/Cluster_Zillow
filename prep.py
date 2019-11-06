@@ -27,10 +27,25 @@ def drop_rows(df):
 
 
 def prep_df():
+    #query for single family residence from zillow db
     df = acquire.wrangle_zillow()
+
+    #imputing values for NaNs
+    df['tax_value_per_foot'] = df.landtaxvaluedollarcnt/df.lotsizesquarefeet
+    df.lotsizesquarefeet = df['lotsizesquarefeet'].fillna((df.landtaxvaluedollarcnt /df.tax_value_per_foot.mean()))
+    df = df.drop(columns='tax_value_per_foot')
+    df.structuretaxvaluedollarcnt = df['structuretaxvaluedollarcnt'].fillna(df.tax_value * (df.structuretaxvaluedollarcnt/df.tax_value).mean())
+
+    #drops columns with more than 20% missing values and columns with high correlation
     df = drop_columns(df)
     return df
 
-def impute_values(df):
-    df.lotsizesquarefeet = df['lotsizesquarefeet'].fillna((df.landtaxvaluedollarcnt /df.tax_value_per_foot.mean()))
-    return df
+
+
+
+# def impute_values(df):
+#     df['tax_value_per_foot'] = df.landtaxvaluedollarcnt/df.lotsizesquarefeet
+#     df.lotsizesquarefeet = df['lotsizesquarefeet'].fillna((df.landtaxvaluedollarcnt /df.tax_value_per_foot.mean()))
+#     df = df.drop(columns='tax_value_per_foot')
+#     df.structuretaxvaluedollarcnt = df['structuretaxvaluedollarcnt'].fillna(df.tax_value * (df.structuretaxvaluedollarcnt/df.tax_value).mean())
+#     return df
