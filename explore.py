@@ -69,3 +69,12 @@ scatter_plot("bathrooms", "logerror")
 scatter_plot("lotsizesquarefeet", "logerror")
 scatter_plot("yearbuilt", "logerror")
 
+
+
+
+def target_cluster(y_train,X_train):
+    kmeans = KMeans(n_clusters=5)
+    kmeans.fit(y_train)
+    y_train['cluster'] = kmeans.predict(y_train)
+    train = X_train.merge(y_train,left_index=True,right_index=True)
+    return train

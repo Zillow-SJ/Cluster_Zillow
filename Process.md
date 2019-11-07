@@ -22,3 +22,9 @@
 - Dropped assessment year as it is only 2016 or 2017
 
 - Dropped prperty use codes that were strings, lost 106 rows.
+
+- Running linear regression on cleaned data
+
+- added IQR outlier function to prep file
+
+- Scatterplot function to compare variables
