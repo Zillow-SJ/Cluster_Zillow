@@ -18,7 +18,7 @@ from sklearn.linear_model import LinearRegression
 from mlxtend.feature_selection import ExhaustiveFeatureSelector as EFS
 from sklearn.model_selection import train_test_split
 df_2 = df_2.dropna()
-train, test = train_test_split(df_2, train_size = .75, random_state = 123q)
+train, test = train_test_split(df_2, train_size = .75, random_state = 123)
 X_train = train.drop(columns=["logerror"])
 y_train = train["logerror"]
 X_test = test.drop(columns=["logerror"])
