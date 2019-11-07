@@ -21,7 +21,7 @@ def wrangle_zillow():
     p.calculatedfinishedsquarefeet IS NOT NULL
     and
     p.bedroomcnt > 0
-    and 
+    and
     p.bathroomcnt > 0
     and
     p.taxvaluedollarcnt > 0
@@ -33,4 +33,7 @@ def wrangle_zillow():
     """
     ,url)
     return df
+
+df = wrangle_zillow()
+print(df.head())
 
