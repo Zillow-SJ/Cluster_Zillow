@@ -52,3 +52,14 @@ def prep_df():
 #     df = df.drop(columns='tax_value_per_foot')
 #     df.structuretaxvaluedollarcnt = df['structuretaxvaluedollarcnt'].fillna(df.tax_value * (df.structuretaxvaluedollarcnt/df.tax_value).mean())
 #     return df
+
+
+def remove_outliers_iqr(df, columns):
+    for col in columns:
+        q75, q25 = np.percentile(df[col], [75,25])
+        ub = 3*stats.iqr(df[col]) + q75
+        lb = q25 - 3*stats.iqr(df[col])
+        print(len(df[df[col] <= ub]))
+        df = df[df[col] <= ub]
+        df = df[df[col] >= lb]
+    return df
