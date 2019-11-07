@@ -13,12 +13,12 @@
 - Dropped calculatedfinishedsquarefeet column due to high correlation with sqft column. 
 - Dropped censustractandblock column due to high correlation with fips column.
 - Dropped propertylanduseandblock column due to high correlation with fips column.
-- Dropped regionidcity Nan rows that were missing; it was determined the effect of dropping rows had less potential for negitive impact than to impute said row. 
+- Dropped regionidcity Nan rows that were missing; it was determined the effect of          dropping rows had less potential for negitive impact than to impute said row. 
 - Dropped roomcnt due to large amount of unresolvable nan's.
 - Dropped landtaxvaluedollarcnt column due to high correlation with tax_value column. 
 - Dropped taxamount column due to high correlation with tax_value column.
 
 
-- dropped assessment year as it is only 2016 or 2017
+- Dropped assessment year as it is only 2016 or 2017
 
-- dropped prperty use codes that were strings, lost 106 rows.
+- Dropped prperty use codes that were strings, lost 106 rows.
