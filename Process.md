@@ -28,3 +28,10 @@
 - added IQR outlier function to prep file
 
 - Scatterplot function to compare variables
+
+
+- Ran t test for tax value by quartile. 
+
+- Binned train dataset by logerror
+
+- plotted stdev and mean of tax value
