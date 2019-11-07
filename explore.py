@@ -4,7 +4,7 @@ import pandas_profiling
 import prep
 import seaborn as sns
 import pandas_profiling
-df,df_machine_model = prep.prep_df()
+df = prep.prep_df()
 df_2 = df.drop(columns = ["propertycountylandusecode", "fips", "latitude", "longitude", "regionidcity", "regionidcounty", "regionidzip"])
 explore_df = pd.Series(df_2.corrwith(df["logerror"]))
 explore_df.nlargest(n=5)
@@ -18,14 +18,12 @@ from sklearn.linear_model import LinearRegression
 from mlxtend.feature_selection import ExhaustiveFeatureSelector as EFS
 from sklearn.model_selection import train_test_split
 df_2 = df_2.dropna()
-train, test = train_test_split(df_2, train_size = .75, random_state = 123)
+train, test = train_test_split(df_2, train_size = .75, random_state = 123q)
 X_train = train.drop(columns=["logerror"])
 y_train = train["logerror"]
 X_test = test.drop(columns=["logerror"])
 y_test = test["logerror"]
 
-##SPLIT LAT AND LONG FROM TRAIN AND TEST AFTER SPLIT. 
-##
 lm = LinearRegression()
 
 efs = EFS(lm, min_features=3, max_features=7, \
@@ -40,7 +38,7 @@ df_2.columns
 #Scaling and refitting. 
 from sklearn import preprocessing
 scaler = preprocessing.StandardScaler()
-scaled_log = scaler.fit_transform(array.reshape(df_2.logerror))
+scaled_log = scaler.fit_transform(df_2[["logerror"]])
 df_3 = df_2[["bathrooms", "tax_value", "lotsizesquarefeet", 'yearbuilt', "logerror"]]
 train_2, test_2 = train_test_split(df_3, train_size = .75, random_state = 123)
 
@@ -50,20 +48,8 @@ X_test_2 = test_2.drop(columns=["logerror"])
 y_test_2 = test_2["logerror"]
 
 
-from sklearn.ensemble import RandomForestRegressor
-RFR = RandomForestRegressor(max_depth=4)
-RFR.fit(X_train_2, y_train_2)
-RFR.score(X_train_2, y_train_2)
-RFR.score(X_test_2, y_test_2)
-#reject - .01
 
 
-from sklearn.linear_model import Lasso
-model = Lasso()
-visualizer = PredictionError(model)
-visualizer.fit(X_train_2, y_train_2)  # Fit the training data to the visualizer
-visualizer.score(X_test_2, y_test_2)  # Evaluate the model on the test data
-visualizer.show() 
 
 
 
@@ -83,21 +69,3 @@ scatter_plot("bathrooms", "logerror")
 scatter_plot("lotsizesquarefeet", "logerror")
 scatter_plot("yearbuilt", "logerror")
 
-
-
-
-
-from sklearn.linear_model import Lasso
-from sklearn.model_selection import GridSearchCV
-clf_3 = Lasso()
-param = {"alpha": [1e-15, 1e-10,1e-8,1e-4,1e-3,1e-2,1,5,10,20]}
-lasso_regressor = GridSearchCV(clf_3, param, scoring="neg_mean_squared_error")
-lasso_regressor.fit(X_train, y_train)
-print(lasso_regressor.best_params_)
-print(lasso_regressor.best_score_)
-
-from sklearn import svm
-clf_4 = svm.LinearSVR()
-clf_4.fit(X_train_2, y_train_2)
-clf_4.score(X_train_2, y_train_2)
-clf_4.score(X_test_2, y_test_2)
