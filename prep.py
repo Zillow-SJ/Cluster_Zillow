@@ -13,7 +13,8 @@ def drop_columns(df):
         'bathroomcnt','bedroomcnt','calculatedbathnbr','finishedsquarefeet12',\
             'censustractandblock','fullbathcnt','propertylandusetypeid',\
                 'rawcensustractandblock','roomcnt','calculatedfinishedsquarefeet',\
-                    'landtaxvaluedollarcnt','taxamount','taxvaluedollarcnt','assessmentyear','propertycountylandusecode'])
+                    'landtaxvaluedollarcnt','taxamount','taxvaluedollarcnt',\
+                        'assessmentyear','propertycountylandusecode'])
     return df_new
 
 def drop_rows(df):
@@ -24,6 +25,7 @@ def drop_rows(df):
     row_drops = list(row_drops.column_names)
     df_new = df.drop(row_drops,axis=0)
     return df_new
+
 
 
 def prep_df():
@@ -63,3 +65,22 @@ def remove_outliers_iqr(df, columns):
         df = df[df[col] <= ub]
         df = df[df[col] >= lb]
     return df
+
+def target_cluster(y_train,X_train):
+    from sklearn.cluster import KMeans
+    kmeans = KMeans(n_clusters=5)
+    y_train = pd.DataFrame(y_train)
+    kmeans.fit(y_train)
+    y_train['cluster'] = kmeans.predict(y_train)
+    train = X_train.merge(y_train,left_index=True,right_index=True)
+    return train
+
+def get_train_test(df):
+    from sklearn.model_selection import train_test_split
+    df = df.dropna()
+    train, test = train_test_split(df, train_size = .75, random_state = 123)
+    X_train = train.drop(columns=["logerror"])
+    y_train = train["logerror"]
+    X_test = test.drop(columns=["logerror"])
+    y_test = test["logerror"]
+return X_train, y_train, X_test, y_test

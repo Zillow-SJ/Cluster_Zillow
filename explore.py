@@ -17,16 +17,6 @@ profile
 from sklearn.linear_model import LinearRegression
 from mlxtend.feature_selection import ExhaustiveFeatureSelector as EFS
 
-def get_train_test(df):
-    from sklearn.model_selection import train_test_split
-    df = df.dropna()
-    train, test = train_test_split(df, train_size = .75, random_state = 123)
-    X_train = train.drop(columns=["logerror"])
-    y_train = train["logerror"]
-    X_test = test.drop(columns=["logerror"])
-    y_test = test["logerror"]
-return X_train, y_train, X_test, y_test
-
 lm = LinearRegression()
 
 efs = EFS(lm, min_features=3, max_features=7, \
@@ -75,9 +65,3 @@ scatter_plot("yearbuilt", "logerror")
 
 
 
-def target_cluster(y_train,X_train):
-    kmeans = KMeans(n_clusters=5)
-    kmeans.fit(y_train)
-    y_train['cluster'] = kmeans.predict(y_train)
-    train = X_train.merge(y_train,left_index=True,right_index=True)
-    return train
