@@ -66,21 +66,28 @@ def remove_outliers_iqr(df, columns):
         df = df[df[col] >= lb]
     return df
 
-def target_cluster(y_train,X_train):
+def target_cluster(X_train, y_train):
     from sklearn.cluster import KMeans
     kmeans = KMeans(n_clusters=5)
-    y_train = pd.DataFrame(y_train)
+    y_train = pd.DataFrame([y_train])
+    y_train = y_train.T
     kmeans.fit(y_train)
-    y_train['cluster'] = kmeans.predict(y_train)
-    train = X_train.merge(y_train,left_index=True,right_index=True)
+    y_train['cluster_y'] = kmeans.predict(y_train)
+    train = X_train.join(y_train)
     return train
 
 def get_train_test(df):
     from sklearn.model_selection import train_test_split
     df = df.dropna()
-    train, test = train_test_split(df, train_size = .75, random_state = 123)
+    train, test = train_test_split(df, train_size = .70, random_state = 123)
     X_train = train.drop(columns=["logerror"])
     y_train = train["logerror"]
     X_test = test.drop(columns=["logerror"])
     y_test = test["logerror"]
     return X_train, y_train, X_test, y_test
+
+def get_train_and_test(df):
+    from sklearn.model_selection import train_test_split
+    df = df.dropna()
+    train, test = train_test_split(df, train_size = .70, random_state = 123)
+    return train, test
