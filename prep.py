@@ -2,6 +2,7 @@ import warnings
 warnings.filterwarnings("ignore")
 import acquire
 import pandas as pd
+import numpy as np
 def drop_columns(df):
     df_nulls_c = pd.DataFrame(df.apply(lambda x: len(x) - x.count(),axis=0))
     df_nulls_c['pct_rows_missing'] = df_nulls_c[0] / len(df)
@@ -98,10 +99,10 @@ def get_baseline_train_test_split(df):
     from sklearn.model_selection import train_test_split
     df = df.dropna()
     train, test = train_test_split(df, train_size = .70, random_state = 123)
-    X_train = train.drop(columns=["logerror",'fips','latitude','longitude','regionidcity','regionidcounty','regionidzip'])
+    X_train = train.drop(columns=["logerror",'latitude','longitude'])
     y_train = train["logerror"]
     y_train = pd.DataFrame(y_train)
-    X_test = test.drop(columns=["logerror",'fips','latitude','longitude','regionidcity','regionidcounty','regionidzip'])
+    X_test = test.drop(columns=["logerror",'latitude','longitude'])
     y_test = test["logerror"]
     y_test = pd.DataFrame(y_test)
     return X_train, y_train, X_test, y_test

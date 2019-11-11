@@ -5,6 +5,7 @@ import prep
 import seaborn as sns
 
 from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
 # df = prep.prep_df()
 # df_2 = df.drop(columns = ["fips", "latitude", "longitude", "regionidcity", "regionidcounty", "regionidzip"])
 # explore_df = pd.Series(df_2.corrwith(df["logerror"]))
@@ -64,8 +65,8 @@ def scatter_plot(feature, target):
     # scatter_plot("yearbuilt", "logerror")
 
 # funtion to cluster on y_train and merge back to train dataframe.
-def target_cluster(y_train,X_train):
-    kmeans =KMeans(n_clusters=3)
+def target_cluster(y_train,X_train,num_clusters):
+    kmeans =KMeans(n_clusters=num_clusters)
     kmeans.fit(y_train)
     y_train['cluster'] = kmeans.predict(y_train)
     train = X_train.merge(y_train,left_index=True,right_index=True)
