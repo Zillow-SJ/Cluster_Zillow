@@ -171,6 +171,7 @@ baseline = pd.DataFrame(baseline)
 baseline["mean_logerror"] = baseline[0].mean()
 baseline = baseline.mean_logerror.values
 #output from model is 0.02817864224808966
+#output from scaled test model is 0.006084700981586714
 import seaborn as sns
 seaout = pd.DataFrame({'actual': y_train,
               'lm1': ypred.ravel(),
