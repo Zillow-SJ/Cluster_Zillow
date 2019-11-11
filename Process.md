@@ -55,4 +55,4 @@ wit(n) = with number of variables
 
 - Attempted to use classifier on y cluster. Proved fruitless because clusters were too out of balance.
 
-- 
+- Tax_per_sqft was created to represent the price per square foot. 
