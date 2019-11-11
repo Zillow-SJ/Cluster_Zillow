@@ -18,7 +18,7 @@ def drop_columns(df):
                 'rawcensustractandblock','roomcnt','calculatedfinishedsquarefeet',\
                     'landtaxvaluedollarcnt','taxamount','taxvaluedollarcnt',\
                         'assessmentyear','propertycountylandusecode',"fips",\
-                            "bathrooms", "bedrooms", "sqft", "tax_value", "yearbuilt",\
+                            "bathrooms", "bedrooms", "sqft", "yearbuilt",\
                                  "regionidcity", "regionidcounty", "regionidzip"])
     return df_new
 
