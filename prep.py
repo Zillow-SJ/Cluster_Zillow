@@ -3,6 +3,8 @@ warnings.filterwarnings("ignore")
 import acquire
 import pandas as pd
 import numpy as np
+import scipy.stats as stats
+
 def drop_columns(df):
     df_nulls_c = pd.DataFrame(df.apply(lambda x: len(x) - x.count(),axis=0))
     df_nulls_c['pct_rows_missing'] = df_nulls_c[0] / len(df)
