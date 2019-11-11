@@ -139,13 +139,9 @@ def get_baseline_train_test_split(df):
     from sklearn.model_selection import train_test_split
     df = df.dropna()
     train, test = train_test_split(df, train_size = .70, random_state = 123)
-    X_train = train.drop(columns=["logerror",'latitude','longitude'])
+    X_train = train.drop(columns=["logerror"])
     y_train = train["logerror"]
-    y_train = pd.DataFrame(y_train)
-    X_test = test.drop(columns=["logerror",'latitude','longitude'])
+    X_test = test.drop(columns=["logerror"])
     y_test = test["logerror"]
     y_test = pd.DataFrame(y_test)
     return X_train, y_train, X_test, y_test
-
-
-
