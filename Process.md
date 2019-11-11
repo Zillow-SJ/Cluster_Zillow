@@ -35,3 +35,5 @@
 - Binned train dataset by logerror
 
 - plotted stdev and mean of tax value
+
+- Attempted to use classifier on y cluster. Proved fruitless because clusters were too out of balance.
