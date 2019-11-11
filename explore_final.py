@@ -102,3 +102,35 @@ def x_cluster(X_train,X_test,num_clusters):
     return X_train, X_test, kmeans
 
 
+def bad_dist():
+    import pandas as pd
+    from sklearn.cluster import KMeans
+    from sklearn.pipeline import Pipeline
+    from sklearn import preprocessing
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    import prep
+    from sklearn.linear_model import LinearRegression
+    from sklearn.metrics import mean_squared_error
+    df = prep.prep_df()
+    df["tax_per_sqft"] = df.tax_value/df.sqft
+    train, test = prep.get_train_and_test(df)
+    train.drop(columns=["tax_value", "sqft"], inplace=True)
+    test.drop(columns=["tax_value", "sqft"], inplace=True)
+    scaler = preprocessing.MinMaxScaler()
+    train.drop(columns=["latitude", "longitude"], inplace=True)
+    test.drop(columns=["latitude", "longitude"], inplace=True)
+    scaled_train = scaler.fit_transform(train[["logerror"]])
+    scaled_test = scaler.fit_transform(test[["logerror"]])
+    train["logerror"] = scaled_train
+    test["logerror"] = scaled_test
+    X_train, y_train, X_test, y_test = prep.get_train_test_split(train, test)
+    def uneven_dist_chart_train():
+        sns.distplot(y_train)
+        plt.xlim(.4, .8)
+        plt.show()
+    def uneven_dist_chart_test():
+        sns.distplot(y_test)
+        plt.xlim(.4,.8)
+        plt.show()
+    return uneven_dist_chart_test, uneven_dist_chart_train
