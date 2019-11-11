@@ -142,12 +142,12 @@ train.columns
 train.corr()
 test["price_sqft"] = test.tax_value/test.sqft
 test.drop(columns=["bathrooms", "bedrooms", "sqft", "tax_value", "yearbuilt"], inplace =True)
-
+test.columns
 #Scaling and refitting. 
 from sklearn import preprocessing
 scaler = preprocessing.MinMaxScaler()
-train.drop(columns =["latitude", "longitude"])
-test.drop(columns =["latitude", "longitude"])
+train.drop(columns =["latitude", "longitude"], inplace = True)
+test.drop(columns =["latitude", "longitude"], inplace =True)
 scaled_log = scaler.fit_transform(train[["logerror"]])
 scaled_log_test = scaler.fit_transform(test[["logerror"]])
 train["logerror"] = scaled_log
@@ -160,20 +160,33 @@ y_test = test["logerror"]
 from sklearn.linear_model import LinearRegression
 lm = LinearRegression()
 reg = lm.fit(X_train, y_train)
-reg.score(X_train, y_train)
 ypred = reg.predict(X_train)
 ypred_final = reg.predict(X_test)
 from sklearn.metrics import mean_squared_error
 mean_squared_error(y_train, ypred)
 mean_squared_error(y_test, ypred_final)
 reg.score(X_test, y_test)
-X_train
+baseline = y_train.values
+baseline = pd.DataFrame(baseline)
+baseline["mean_logerror"] = baseline[0].mean()
+baseline = baseline.mean_logerror.values
 #output from model is 0.02817864224808966
+import seaborn as sns
+seaout = pd.DataFrame({'actual': y_train,
+              'lm1': ypred.ravel(),
+              'lm_baseline': baseline.ravel()})\
+.melt(id_vars=['actual'], var_name='model', value_name='prediction')\
+.pipe((sns.relplot, 'data'), x='actual', y='prediction', hue='model', palette = "Blues_d")
+# y_train = pd.DataFrame(y_train)
+# y_unscaled = pd.DataFrame(scaler.inverse_transform(y_train), columns=y_train.columns.values).set_index([y_train.index.values])
+# y_train
 
 from sklearn.linear_model import OrthogonalMatchingPursuit
 orth = OrthogonalMatchingPursuit().fit(X_train, y_train)
 ypred_orth = orth.predict(X_train)
+y_pred_or = orth.predict(X_test)
 mean_squared_error(y_train, ypred_orth)
+mean_squared_error(y_test, y_pred_or)
 
 #output from model is 0.028178642248089667
 
