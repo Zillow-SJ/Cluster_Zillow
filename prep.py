@@ -79,10 +79,7 @@ def target_cluster(X_train, y_train):
     train = X_train.join(y_train)
     return train
 
-def get_train_test_split(df):
-    from sklearn.model_selection import train_test_split
-    df = df.dropna()
-    train, test = train_test_split(df, train_size = .70, random_state = 123)
+def get_train_test_split(train, test):
     X_train = train.drop(columns=["logerror"])
     y_train = train["logerror"]
     X_test = test.drop(columns=["logerror"])
