@@ -140,3 +140,60 @@ train["price_sqft"] = train.tax_value/train.sqft
 train.drop(columns=["bathrooms", "bedrooms", "sqft", "tax_value", "yearbuilt"], inplace =True)
 train.columns
 train.corr()
+test["price_sqft"] = test.tax_value/test.sqft
+test.drop(columns=["bathrooms", "bedrooms", "sqft", "tax_value", "yearbuilt"], inplace =True)
+
+#Scaling and refitting. 
+from sklearn import preprocessing
+scaler = preprocessing.MinMaxScaler()
+train.drop(columns =["latitude", "longitude"])
+test.drop(columns =["latitude", "longitude"])
+scaled_log = scaler.fit_transform(train[["logerror"]])
+scaled_log_test = scaler.fit_transform(test[["logerror"]])
+train["logerror"] = scaled_log
+test["logerror"] = scaled_log_test
+X_train = train.drop(columns=["logerror"])
+y_train = train["logerror"]
+X_test = test.drop(columns=["logerror"])
+y_test = test["logerror"]
+
+from sklearn.linear_model import LinearRegression
+lm = LinearRegression()
+reg = lm.fit(X_train, y_train)
+reg.score(X_train, y_train)
+ypred = reg.predict(X_train)
+ypred_final = reg.predict(X_test)
+from sklearn.metrics import mean_squared_error
+mean_squared_error(y_train, ypred)
+mean_squared_error(y_test, ypred_final)
+reg.score(X_test, y_test)
+X_train
+#output from model is 0.02817864224808966
+
+from sklearn.linear_model import OrthogonalMatchingPursuit
+orth = OrthogonalMatchingPursuit().fit(X_train, y_train)
+ypred_orth = orth.predict(X_train)
+mean_squared_error(y_train, ypred_orth)
+
+#output from model is 0.028178642248089667
+
+from sklearn import linear_model
+clf = linear_model.Ridge(alpha=.5)
+clf.fit(X_train, y_train)
+y_pred = clf.predict(X_train)
+mean_squared_error(y_train, y_pred)
+#output from model is 0.02817864224808966
+
+from sklearn.linear_model import ElasticNet
+clf2 = ElasticNet(random_state=123)
+clf2.fit(X_train, y_train)
+y_pred2 = clf2.predict(X_train)
+mean_squared_error(y_train, y_pred2)
+#output from model is 0.028179318168790338
+
+reg2 = linear_model.BayesianRidge()
+reg2.fit(X_train, y_train)
+y_pred3 = reg2.predict(X_train)
+mean_squared_error(y_train, y_pred3)
+#output from model is 0.02817864224809334
+

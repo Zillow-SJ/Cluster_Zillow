@@ -13,7 +13,7 @@
 - Dropped calculatedfinishedsquarefeet column due to high correlation with sqft column. 
 - Dropped censustractandblock column due to high correlation with fips column.
 - Dropped propertylanduseandblock column due to high correlation with fips column.
-- Dropped regionidcity Nan rows that were missing; it was determined the effect of          dropping rows had less potential for negitive impact than to impute said row. 
+- Dropped regionidcity Nan rows that were missing; it was determined the effect of dropping rows had less potential for negitive impact than to impute said row. 
 - Dropped roomcnt due to large amount of unresolvable nan's.
 - Dropped landtaxvaluedollarcnt column due to high correlation with tax_value column. 
 - Dropped taxamount column due to high correlation with tax_value column.
@@ -34,4 +34,20 @@
 
 - Binned train dataset by logerror
 
-- plotted stdev and mean of tax value
+- Plotted stdev and mean of tax value
+
+- Ran Silouette Score, outcomes:
+wit(n) = with number of variables
+#score tax/log = 0.122
+#score bedrooms/log = 0.738
+#score bathrooms/log = 0.508
+#score yearbuilt/log = 0.448
+#score sqft/log = -0.37
+#score structuretaxvaluedollarcnt/log = 0.1212
+#score structuretax/price_sqft/lotsize = 0.145 / 0.754(wit4) !!!!!!!!!!!!!!!!!!!!
+#score price_sqft/lotsize = 0.0156 / 0.140(wit3)
+#score structuretax/lotsize = 0.755 / 0.848(wit3)
+#score structruetax/price_sqft = 0.116 / 0.232(wit3)
+
+
+
