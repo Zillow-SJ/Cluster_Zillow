@@ -52,18 +52,23 @@ def cluster(train, cluster_by, n_clusters):
 def score_sil(train, cols):
     from sklearn.metrics import silhouette_score
     kmeans_pipeline = Pipeline([("scale", StandardScaler()),\
-        ("kmeans", KMeans(n_clusters=5, random_state = 123))])
+        ("kmeans", KMeans(n_clusters=4, random_state = 123))])
     kmeans_pipeline.fit(train[cols])
     return silhouette_score(train[cols], kmeans_pipeline.predict(train[cols]))
 
 
-score_sil(train, ["bedrooms"])
+score_sil(train, [ "price_sqft", "lotsizesquarefeet", "structuretaxvaluedollarcnt"])
 #score tax/log = 0.122
 #score bedrooms/log = 0.738
 #score bathrooms/log = 0.508
 #score yearbuilt/log = 0.448
-#score lotsizesquarefeet/log = -0.37
+#score sqft/log = -0.37
 #score structuretaxvaluedollarcnt/log = 0.1212
+#score structuretax/price_sqft/lotsize = 0.145 / 0.754(wit4) !!!!!!!!!!!!!!!!!!!!
+#score price_sqft/lotsize = 0.0156 / 0.140(wit3)
+#score structuretax/lotsize = 0.755 / 0.848(wit3)
+#score structruetax/price_sqft = 0.116 / 0.232(wit3)
+
 
 #ttest of tax value returned negligible resulets. 
 
@@ -93,9 +98,45 @@ out.groupby('clusters').mean().sort_values(by='logerror')
  
 #average for 1,2,3,4 bathrooms then corr_average for logerror - ttest
 
-t1 = train[["bathrooms", "logerror"]]
-t1.groupby("bathrooms").mean().sort_values(by="logerror", ascending=True)
+t1 = train[["bedrooms", "logerror"]]
+t1.groupby("bedrooms").mean().sort_values(by="logerror", ascending=True)
 
 t2 = out[["price_per_sqft", "logerror"]]
-t2.describe()
-t1.groupby("sqft_avg").mean().sort_values(by="logerror", ascending=True)
+t2["sqft_avg"] = pd.cut(t2["price_per_sqft"], bins=5)
+t3 = t2.groupby("sqft_avg").mean()
+from scipy.stats import ttest_ind, norm
+t3.reset_index(inplace=True)
+t3
+ttest_ind(t3.loc[0].logerror,t3.loc[1].logerror)
+t3.loc[1].logerror
+t3.loc[0].logerror
+t2["log_bin"] = pd.cut(t2["logerror"], bins = 5)
+logerror_outliers = train[(train.logerror < -1)]
+logerrors_below = logerror_outliers.mean()
+logerrors_below = pd.DataFrame(logerrors_below)
+logerrors_below = logerrors_below.T
+logerrors_below
+from statistics import stdev
+logerrors_normal = train[(train.logerror < 0.03) | (train.logerror > -0.02)]
+logerrors_normal = logerrors_normal.mean()
+logerrors_normal = pd.DataFrame(logerrors_normal)
+logerrors_normal = logerrors_normal.T
+logerrors_normal
+logerror_outliers_above = train[(train.logerror > 1)]
+logerrors_above = logerror_outliers_above.mean()
+logerrors_above = pd.DataFrame(logerrors_above)
+logerrors_above = logerrors_above.T
+logerrors_above["price_sqft"] = logerrors_above.tax_value/logerrors_above.sqft
+logerrors_below["price_sqft"] = logerrors_below.tax_value/logerrors_below.sqft
+logerrors_normal["price_sqft"] = logerrors_normal.tax_value/logerrors_normal.sqft
+
+logerrors_above
+logerrors_normal
+logerrors_below
+
+
+### DROP BATHROOMS, BEDROOMS, SQFT, TAX_VALUE, YEAR_BUILT 
+train["price_sqft"] = train.tax_value/train.sqft
+train.drop(columns=["bathrooms", "bedrooms", "sqft", "tax_value", "yearbuilt"], inplace =True)
+train.columns
+train.corr()
