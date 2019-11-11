@@ -3,6 +3,8 @@ import pandas as pd
 import pandas_profiling
 import prep
 import seaborn as sns
+
+from sklearn.cluster import KMeans
 # df = prep.prep_df()
 # df_2 = df.drop(columns = ["fips", "latitude", "longitude", "regionidcity", "regionidcounty", "regionidzip"])
 # explore_df = pd.Series(df_2.corrwith(df["logerror"]))
@@ -68,3 +70,21 @@ def target_cluster(y_train,X_train):
     y_train['cluster'] = kmeans.predict(y_train)
     train = X_train.merge(y_train,left_index=True,right_index=True)
     return train
+
+def elbow_plot(target):
+    ks = range(1,10)
+    sse = []
+    for k in ks:
+        kmeans = KMeans(n_clusters=k)
+        kmeans.fit(target)
+
+        # inertia: Sum of squared distances of samples to their closest cluster center.
+        sse.append(kmeans.inertia_)
+
+    print(pd.DataFrame(dict(k=ks, sse=sse)))
+
+    plt.plot(ks, sse, 'bx-')
+    plt.xlabel('k')
+    plt.ylabel('SSE')
+    plt.title('The Elbow Method to find the optimal k')
+    plt.show()

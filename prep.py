@@ -14,7 +14,7 @@ def drop_columns(df):
             'censustractandblock','fullbathcnt','propertylandusetypeid',\
                 'rawcensustractandblock','roomcnt','calculatedfinishedsquarefeet',\
                     'landtaxvaluedollarcnt','taxamount','taxvaluedollarcnt',\
-                        'assessmentyear','propertycountylandusecode'])
+                        'assessmentyear','propertycountylandusecode',"fips", "regionidcity", "regionidcounty", "regionidzip"])
     return df_new
 
 def drop_rows(df):
@@ -90,4 +90,18 @@ def get_train_and_test(df):
     from sklearn.model_selection import train_test_split
     df = df.dropna()
     train, test = train_test_split(df, train_size = .70, random_state = 123)
+    train['tax_per_sqft'] = train.tax_value/train.sqft
+    test['tax_per_sqft'] = test.tax_value/test.sqft
     return train, test
+
+def get_baseline_train_test_split(df):
+    from sklearn.model_selection import train_test_split
+    df = df.dropna()
+    train, test = train_test_split(df, train_size = .70, random_state = 123)
+    X_train = train.drop(columns=["logerror",'fips','latitude','longitude','regionidcity','regionidcounty','regionidzip'])
+    y_train = train["logerror"]
+    y_train = pd.DataFrame(y_train)
+    X_test = test.drop(columns=["logerror",'fips','latitude','longitude','regionidcity','regionidcounty','regionidzip'])
+    y_test = test["logerror"]
+    y_test = pd.DataFrame(y_test)
+    return X_train, y_train, X_test, y_test
