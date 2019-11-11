@@ -143,5 +143,4 @@ def get_baseline_train_test_split(df):
     y_train = train["logerror"]
     X_test = test.drop(columns=["logerror"])
     y_test = test["logerror"]
-    y_test = pd.DataFrame(y_test)
     return X_train, y_train, X_test, y_test
