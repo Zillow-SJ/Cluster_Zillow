@@ -5,6 +5,44 @@ import pandas as pd
 import numpy as np
 import scipy.stats as stats
 
+#prep functions for initial exploration
+def drop_columns_initial(df):
+    df_nulls_c = pd.DataFrame(df.apply(lambda x: len(x) - x.count(),axis=0))
+    df_nulls_c['pct_rows_missing'] = df_nulls_c[0] / len(df)
+    column_drops = df_nulls_c[df_nulls_c['pct_rows_missing'] >.2]
+    column_drops['column_names'] = column_drops.index
+    column_drops = list(column_drops.column_names)
+    df_new = df.drop(column_drops,axis=1)
+    df_new = df_new.drop(columns=['parcelid','id','transactiondate',\
+        'bathroomcnt','bedroomcnt','calculatedbathnbr','finishedsquarefeet12',\
+            'censustractandblock','fullbathcnt','propertylandusetypeid',\
+                'rawcensustractandblock','roomcnt','calculatedfinishedsquarefeet',\
+                    'landtaxvaluedollarcnt','taxamount','taxvaluedollarcnt',\
+                        'assessmentyear','propertycountylandusecode',"fips",\
+                             "yearbuilt",\
+                                 "regionidcity", "regionidcounty", "regionidzip"])
+    return df_new
+
+def prep_df_initial():
+    #query for single family residence from zillow db
+    df = acquire.wrangle_zillow()
+
+    #imputing values for NaNs
+    df['tax_value_per_foot'] = df.landtaxvaluedollarcnt/df.lotsizesquarefeet
+    df.lotsizesquarefeet = df['lotsizesquarefeet'].fillna((df.landtaxvaluedollarcnt /df.tax_value_per_foot.mean()))
+    df = df.drop(columns='tax_value_per_foot')
+    df.structuretaxvaluedollarcnt = df['structuretaxvaluedollarcnt'].fillna(df.tax_value * (df.structuretaxvaluedollarcnt/df.tax_value).mean())
+
+    #drops columns with more than 20% missing values and columns with high correlation
+    df = drop_columns_initial(df)
+
+    #drop rows with NAs. Less than 1100 rows of 55,000 data set.
+    df = df.dropna(how='any')
+    return df
+
+
+#prep functions for final dataframe
+
 def drop_columns(df):
     df_nulls_c = pd.DataFrame(df.apply(lambda x: len(x) - x.count(),axis=0))
     df_nulls_c['pct_rows_missing'] = df_nulls_c[0] / len(df)
@@ -108,3 +146,6 @@ def get_baseline_train_test_split(df):
     y_test = test["logerror"]
     y_test = pd.DataFrame(y_test)
     return X_train, y_train, X_test, y_test
+
+
+
