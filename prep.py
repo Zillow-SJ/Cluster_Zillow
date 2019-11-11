@@ -60,6 +60,7 @@ def prep_df():
 
 
 def remove_outliers_iqr(df, columns):
+    import scipy.stats as stats
     for col in columns:
         q75, q25 = np.percentile(df[col], [75,25])
         ub = 3*stats.iqr(df[col]) + q75
