@@ -17,7 +17,9 @@ def drop_columns(df):
             'censustractandblock','fullbathcnt','propertylandusetypeid',\
                 'rawcensustractandblock','roomcnt','calculatedfinishedsquarefeet',\
                     'landtaxvaluedollarcnt','taxamount','taxvaluedollarcnt',\
-                        'assessmentyear','propertycountylandusecode',"fips", "regionidcity", "regionidcounty", "regionidzip"])
+                        'assessmentyear','propertycountylandusecode',"fips",\
+                            "bathrooms", "bedrooms", "yearbuilt",\
+                                 "regionidcity", "regionidcounty", "regionidzip"])
     return df_new
 
 def drop_rows(df):
