@@ -28,19 +28,6 @@ df_2.columns
 # Best Params = Bathrooms, Tax_value, lotsizesquarefeet
 
 
-#Scaling and refitting. 
-from sklearn import preprocessing
-scaler = preprocessing.StandardScaler()
-scaled_log = scaler.fit_transform(df_2[["logerror"]])
-df_3 = df_2[["bathrooms", "tax_value", "lotsizesquarefeet", "logerror"]]
-train_2, test_2 = train_test_split(df_3, train_size = .75, random_state = 123)
-
-X_train_2 = train_2.drop(columns=["logerror"])
-y_train_2 = train_2["logerror"]
-X_test_2 = test_2.drop(columns=["logerror"])
-y_test_2 = test_2["logerror"]
-
-reg = lm.fit()
 
 
 
