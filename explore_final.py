@@ -89,3 +89,16 @@ def elbow_plot(target):
     plt.ylabel('SSE')
     plt.title('The Elbow Method to find the optimal k')
     plt.show()
+
+#function to cluster on X_train and merge back with train dataframe
+
+def x_cluster(X_train,X_test,num_clusters):
+    
+    kmeans = KMeans(n_clusters=num_clusters)
+    kmeans.fit(X_train)
+    X_train['x_cluster'] = kmeans.predict(X_train)
+    X_test['x_cluster'] = kmeans.predict(X_test)
+
+    return X_train, X_test, kmeans
+
+
