@@ -133,4 +133,4 @@ def bad_dist():
         sns.distplot(y_test)
         plt.xlim(.4,.8)
         plt.show()
-    return uneven_dist_chart_test, uneven_dist_chart_train
+    return uneven_dist_chart_test
