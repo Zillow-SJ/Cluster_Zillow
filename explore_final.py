@@ -136,3 +136,31 @@ def bad_dist():
     x = uneven_dist_chart_train()
     y = uneven_dist_chart_test()
     return x, y
+
+
+def logerror_outliers():
+    df = prep.prep_df_initial()
+    train, test = prep.get_train_and_test(df)
+    logerror_outliers = train[(train.logerror < -1)]
+    logerrors_below = logerror_outliers.mean()
+    logerrors_below = pd.DataFrame(logerrors_below)
+    logerrors_below = logerrors_below.T
+    logerrors_below
+    from statistics import stdev
+    logerrors_normal = train[(train.logerror < 0.03) | (train.logerror > -0.02)]
+    logerrors_normal = logerrors_normal.mean()
+    logerrors_normal = pd.DataFrame(logerrors_normal)
+    logerrors_normal = logerrors_normal.T
+    logerrors_normal
+    logerror_outliers_above = train[(train.logerror > 1)]
+    logerrors_above = logerror_outliers_above.mean()
+    logerrors_above = pd.DataFrame(logerrors_above)
+    logerrors_above = logerrors_above.T
+    logerrors_above["price_sqft"] = logerrors_above.tax_value/logerrors_above.sqft
+    logerrors_below["price_sqft"] = logerrors_below.tax_value/logerrors_below.sqft
+    logerrors_normal["price_sqft"] = logerrors_normal.tax_value/logerrors_normal.sqft
+    df = logerrors_above.append(logerrors_normal)
+    df = df.append(logerrors_below)
+    df.drop(columns='tax_per_sqft',inplace=True)
+    df.index = ['logerrors<1', 'logerrors~0', 'logerrors>1']
+    return df
