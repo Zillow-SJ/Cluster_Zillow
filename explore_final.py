@@ -105,7 +105,6 @@ def x_cluster(X_train,X_test,num_clusters):
 def bad_dist():
     import pandas as pd
     from sklearn.cluster import KMeans
-    from sklearn.pipeline import Pipeline
     from sklearn import preprocessing
     import matplotlib.pyplot as plt
     import seaborn as sns
@@ -133,4 +132,7 @@ def bad_dist():
         sns.distplot(y_test)
         plt.xlim(.4,.8)
         plt.show()
-    return uneven_dist_chart_test
+
+    x = uneven_dist_chart_train()
+    y = uneven_dist_chart_test()
+    return x, y

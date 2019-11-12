@@ -1,6 +1,5 @@
 import pandas as pd
 from sklearn.cluster import KMeans
-from sklearn.pipeline import Pipeline
 from sklearn import preprocessing
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -29,10 +28,35 @@ mean_squared_error(y_train, ypred_train)
 #output MSE for Train model is: 0.02817864224808966
 mean_squared_error(y_test, ypred_test)
 
-from sklearn.kernel_ridge import KernelRidge
-reg = KernelRidge(alpha=1.0)
-reg = reg.fit(X_train, y_train)
-y_pred = reg.predict(X_train)
-mean_squared_error(y_test, y_pred)
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
+fig, axes = plt.subplots(1,1, figsize=(5,3))
+axes.plot(test.logerror, y_test, "bo", label = "actuals", alpha=0.5)
+axes.plot(test.logerror, ypred_test, "ro", label="predictions", alpha=0.5)
+plt.xlabel("train.logerror")
+plt.ylabel("Logerror")
+plt.legend()
+plt.suptitle("Linear Regression")
+plt.show()
 
+fig, axes = plt.subplots(1,1, figsize=(5,3))
+axes.plot(train.logerror, y_train, "bo", label = "actuals", alpha=0.5)
+axes.plot(train.logerror, ypred_train, "ro", label="predictions", alpha=0.5)
+plt.xlabel("train.logerror")
+plt.ylabel("Logerror")
+plt.legend()
+plt.suptitle("Linear Regression")
+plt.show()
+
+def uneven_dist_chart_train():
+    sns.distplot(y_train)
+    plt.xlim(.4, .8)
+    plt.show()
+    
+    
+def uneven_dist_chart_test():
+    sns.distplot(y_test)
+    plt.xlim(.4,.8)
+    plt.show()
 
