@@ -127,10 +127,12 @@ def bad_dist():
     def uneven_dist_chart_train():
         sns.distplot(y_train)
         plt.xlim(.4, .8)
+        plt.suptitle("Train Logerror Distribution")
         plt.show()
     def uneven_dist_chart_test():
         sns.distplot(y_test)
         plt.xlim(.4,.8)
+        plt.suptitle("Test Logerror Distribution")
         plt.show()
 
     x = uneven_dist_chart_train()
